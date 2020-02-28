@@ -13,6 +13,8 @@
 		844FB0302408B12F004B2A6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844FB02E2408B12F004B2A6F /* Main.storyboard */; };
 		844FB0322408B133004B2A6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844FB0312408B133004B2A6F /* Assets.xcassets */; };
 		844FB0352408B133004B2A6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844FB0332408B133004B2A6F /* LaunchScreen.storyboard */; };
+		844FB03D2408C144004B2A6F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 844FB03C2408C144004B2A6F /* CoreLocation.framework */; };
+		F317AF9B6B94B54C6AF9BDF1 /* Pods_Remind_Umbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAADCC33FA7E8DAE1AF0C75D /* Pods_Remind_Umbrella.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,12 @@
 		844FB0312408B133004B2A6F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		844FB0342408B133004B2A6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		844FB0362408B133004B2A6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		844FB03C2408C144004B2A6F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		844FB03F2408D9C2004B2A6F /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		844FB0432408DAEE004B2A6F /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8514C1E6C00E850C44E2C17C /* Pods-Remind Umbrella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Remind Umbrella.debug.xcconfig"; path = "Target Support Files/Pods-Remind Umbrella/Pods-Remind Umbrella.debug.xcconfig"; sourceTree = "<group>"; };
+		CAE47A2E4123796355DE8376 /* Pods-Remind Umbrella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Remind Umbrella.release.xcconfig"; path = "Target Support Files/Pods-Remind Umbrella/Pods-Remind Umbrella.release.xcconfig"; sourceTree = "<group>"; };
+		FAADCC33FA7E8DAE1AF0C75D /* Pods_Remind_Umbrella.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Remind_Umbrella.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				844FB03D2408C144004B2A6F /* CoreLocation.framework in Frameworks */,
+				F317AF9B6B94B54C6AF9BDF1 /* Pods_Remind_Umbrella.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +52,8 @@
 			children = (
 				844FB0272408B12F004B2A6F /* Remind Umbrella */,
 				844FB0262408B12F004B2A6F /* Products */,
+				AEB1B8B41E5710B25175C913 /* Pods */,
+				EC86F89C25839B9531AD2E45 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +79,26 @@
 			path = "Remind Umbrella";
 			sourceTree = "<group>";
 		};
+		AEB1B8B41E5710B25175C913 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8514C1E6C00E850C44E2C17C /* Pods-Remind Umbrella.debug.xcconfig */,
+				CAE47A2E4123796355DE8376 /* Pods-Remind Umbrella.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		EC86F89C25839B9531AD2E45 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				844FB0432408DAEE004B2A6F /* SwiftyJSON.framework */,
+				844FB03C2408C144004B2A6F /* CoreLocation.framework */,
+				FAADCC33FA7E8DAE1AF0C75D /* Pods_Remind_Umbrella.framework */,
+				844FB03F2408D9C2004B2A6F /* SwiftyJSON.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +106,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 844FB0392408B133004B2A6F /* Build configuration list for PBXNativeTarget "Remind Umbrella" */;
 			buildPhases = (
+				E00D78956B3A2AA05AAEC07E /* [CP] Check Pods Manifest.lock */,
 				844FB0212408B12F004B2A6F /* Sources */,
 				844FB0222408B12F004B2A6F /* Frameworks */,
 				844FB0232408B12F004B2A6F /* Resources */,
+				0A90A9FB25F9B523085D24CD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,6 +166,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0A90A9FB25F9B523085D24CD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Remind Umbrella/Pods-Remind Umbrella-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Remind Umbrella/Pods-Remind Umbrella-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Remind Umbrella/Pods-Remind Umbrella-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E00D78956B3A2AA05AAEC07E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Remind Umbrella-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		844FB0212408B12F004B2A6F /* Sources */ = {
@@ -282,6 +358,7 @@
 		};
 		844FB03A2408B133004B2A6F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8514C1E6C00E850C44E2C17C /* Pods-Remind Umbrella.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -300,6 +377,7 @@
 		};
 		844FB03B2408B133004B2A6F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAE47A2E4123796355DE8376 /* Pods-Remind Umbrella.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
