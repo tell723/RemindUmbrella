@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		844FB0322408B133004B2A6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844FB0312408B133004B2A6F /* Assets.xcassets */; };
 		844FB0352408B133004B2A6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844FB0332408B133004B2A6F /* LaunchScreen.storyboard */; };
 		844FB03D2408C144004B2A6F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 844FB03C2408C144004B2A6F /* CoreLocation.framework */; };
+		844FB11A2412401D004B2A6F /* LounchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844FB1192412401D004B2A6F /* LounchViewController.swift */; };
 		F317AF9B6B94B54C6AF9BDF1 /* Pods_Remind_Umbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAADCC33FA7E8DAE1AF0C75D /* Pods_Remind_Umbrella.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,8 +28,8 @@
 		844FB0342408B133004B2A6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		844FB0362408B133004B2A6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		844FB03C2408C144004B2A6F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		844FB03F2408D9C2004B2A6F /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		844FB0432408DAEE004B2A6F /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		844FB111240DEA51004B2A6F /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		844FB1192412401D004B2A6F /* LounchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LounchViewController.swift; sourceTree = "<group>"; };
 		8514C1E6C00E850C44E2C17C /* Pods-Remind Umbrella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Remind Umbrella.debug.xcconfig"; path = "Target Support Files/Pods-Remind Umbrella/Pods-Remind Umbrella.debug.xcconfig"; sourceTree = "<group>"; };
 		CAE47A2E4123796355DE8376 /* Pods-Remind Umbrella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Remind Umbrella.release.xcconfig"; path = "Target Support Files/Pods-Remind Umbrella/Pods-Remind Umbrella.release.xcconfig"; sourceTree = "<group>"; };
 		FAADCC33FA7E8DAE1AF0C75D /* Pods_Remind_Umbrella.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Remind_Umbrella.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +72,7 @@
 				844FB0282408B12F004B2A6F /* AppDelegate.swift */,
 				844FB02A2408B12F004B2A6F /* SceneDelegate.swift */,
 				844FB02C2408B12F004B2A6F /* ViewController.swift */,
+				844FB1192412401D004B2A6F /* LounchViewController.swift */,
 				844FB02E2408B12F004B2A6F /* Main.storyboard */,
 				844FB0312408B133004B2A6F /* Assets.xcassets */,
 				844FB0332408B133004B2A6F /* LaunchScreen.storyboard */,
@@ -91,10 +93,9 @@
 		EC86F89C25839B9531AD2E45 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				844FB0432408DAEE004B2A6F /* SwiftyJSON.framework */,
+				844FB111240DEA51004B2A6F /* SwiftyJSON.framework */,
 				844FB03C2408C144004B2A6F /* CoreLocation.framework */,
 				FAADCC33FA7E8DAE1AF0C75D /* Pods_Remind_Umbrella.framework */,
-				844FB03F2408D9C2004B2A6F /* SwiftyJSON.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -216,6 +217,7 @@
 			files = (
 				844FB02D2408B12F004B2A6F /* ViewController.swift in Sources */,
 				844FB0292408B12F004B2A6F /* AppDelegate.swift in Sources */,
+				844FB11A2412401D004B2A6F /* LounchViewController.swift in Sources */,
 				844FB02B2408B12F004B2A6F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,6 +369,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					"@loader_path/../Frameworks/",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terumu.Remind-Umbrella";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -386,6 +389,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					"@loader_path/../Frameworks/",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terumu.Remind-Umbrella";
 				PRODUCT_NAME = "$(TARGET_NAME)";

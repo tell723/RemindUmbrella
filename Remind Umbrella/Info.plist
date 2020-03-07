@@ -21,11 +21,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>use corelocation</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>use corelocation</string>
+	<string>このアプリは位置情報を利用します</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>use corelocation</string>
+	<string>このアプリは位置情報を利用します</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -47,6 +45,7 @@
 	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>location</string>
 		<string>processing</string>
 	</array>
@@ -70,6 +69,11 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.RemindUmbrella.refesh</string>
+		<string>com.RemindUmbrella.process</string>
 	</array>
 </dict>
 </plist>

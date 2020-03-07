@@ -100,16 +100,17 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         locationManager.requestAlwaysAuthorization()
         
         let status = CLLocationManager.authorizationStatus()
-        if status == .authorizedAlways {
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
             locationManager.delegate = self
             locationManager.distanceFilter = 100.0
             locationManager.startUpdatingLocation()
+            locationManager.allowsBackgroundLocationUpdates = true
         }
     }
     
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
-        
+                
         let location = locations.first
         self.latitude = location?.coordinate.latitude
         self.longitude = location?.coordinate.longitude

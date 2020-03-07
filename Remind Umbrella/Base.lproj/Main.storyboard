@@ -7,10 +7,25 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Lounch View Controller-->
+        <scene sceneID="Zyz-FJ-eLg">
+            <objects>
+                <viewController id="9Qk-vv-U93" customClass="LounchViewController" customModule="Remind_Umbrella" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="twi-0G-H06">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="UHb-uR-wsD"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bvr-4C-Vee" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-628" y="143"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Remind_Umbrella" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainVC" id="BYZ-38-t0r" customClass="ViewController" customModule="Remind_Umbrella" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -22,47 +37,47 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HKX-Ss-PU5">
-                                <rect key="frame" x="77.5" y="248.5" width="220.5" height="170"/>
+                                <rect key="frame" x="112.5" y="283.5" width="150.5" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hour:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qJ-Uv-Z6M">
-                                        <rect key="frame" x="0.0" y="75" width="42.5" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="40" width="42.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qrh-Cg-VDH">
-                                        <rect key="frame" x="50.5" y="0.0" width="170" height="170"/>
+                                        <rect key="frame" x="50.5" y="0.0" width="100" height="100"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="170" id="TRK-dE-F6h"/>
-                                            <constraint firstAttribute="height" constant="170" id="kNH-tV-f70"/>
+                                            <constraint firstAttribute="height" constant="100" id="5fa-CP-4ek"/>
+                                            <constraint firstAttribute="width" constant="100" id="pFW-jT-YlM"/>
                                         </constraints>
                                     </pickerView>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qdZ-zm-VpE">
-                                <rect key="frame" x="82.5" y="426.5" width="210.5" height="170"/>
+                                <rect key="frame" x="117.5" y="388.5" width="140.5" height="100"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpw-T9-1me">
-                                        <rect key="frame" x="0.0" y="75" width="32.5" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="40" width="32.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="moG-qS-QbT">
-                                        <rect key="frame" x="40.5" y="0.0" width="170" height="170"/>
+                                        <rect key="frame" x="40.5" y="0.0" width="100" height="100"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="170" id="Aew-i2-nsh"/>
-                                            <constraint firstAttribute="width" constant="170" id="Pz9-BH-ead"/>
+                                            <constraint firstAttribute="width" constant="100" id="4c6-UC-BXp"/>
+                                            <constraint firstAttribute="height" constant="100" id="O6z-q8-Vha"/>
                                         </constraints>
                                     </pickerView>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remind Umbrell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8qO-jv-GeW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remind Umbrella" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8qO-jv-GeW">
                                 <rect key="frame" x="112.5" y="163" width="150" height="40"/>
                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="VDu-fJ-b4p"/>
-                                    <constraint firstAttribute="width" constant="150" id="wem-FH-a3r"/>
+                                    <constraint firstAttribute="height" constant="40" id="2nk-Tz-Xu7"/>
+                                    <constraint firstAttribute="width" constant="150" id="tog-G8-Z4B"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name=".SFNS-Regular" family=".SF NS" pointSize="18"/>
                                 <nil key="textColor"/>
@@ -71,18 +86,19 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="qdZ-zm-VpE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8rd-pU-J9S"/>
-                            <constraint firstItem="HKX-Ss-PU5" firstAttribute="top" secondItem="8qO-jv-GeW" secondAttribute="bottom" constant="45.5" id="CAg-HK-vKa"/>
-                            <constraint firstItem="HKX-Ss-PU5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EOG-3O-bkq"/>
-                            <constraint firstItem="spt-V4-OzR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="HBp-U5-jcg"/>
-                            <constraint firstItem="HKX-Ss-PU5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Rs7-II-Lp3"/>
-                            <constraint firstItem="spt-V4-OzR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="WMe-gv-KWQ"/>
-                            <constraint firstItem="qdZ-zm-VpE" firstAttribute="top" secondItem="HKX-Ss-PU5" secondAttribute="bottom" constant="8" symbolic="YES" id="XZi-Vl-E2B"/>
-                            <constraint firstItem="8qO-jv-GeW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="b2F-Jr-ZFF"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="spt-V4-OzR" secondAttribute="trailing" constant="32" id="v1N-G4-hD7"/>
+                            <constraint firstItem="qdZ-zm-VpE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7ZQ-VJ-laM"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="spt-V4-OzR" secondAttribute="trailing" constant="32" id="7q5-KR-M2U"/>
+                            <constraint firstItem="HKX-Ss-PU5" firstAttribute="top" secondItem="8qO-jv-GeW" secondAttribute="bottom" constant="80.5" id="CAO-ua-BzM"/>
+                            <constraint firstItem="spt-V4-OzR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="Fz2-0X-hZM"/>
+                            <constraint firstItem="qdZ-zm-VpE" firstAttribute="top" secondItem="HKX-Ss-PU5" secondAttribute="bottom" constant="5" id="fy0-QW-rzv"/>
+                            <constraint firstItem="spt-V4-OzR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="fyj-TN-GXA"/>
+                            <constraint firstItem="HKX-Ss-PU5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="h61-oQ-67I"/>
+                            <constraint firstItem="HKX-Ss-PU5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="uWc-5M-oKs"/>
+                            <constraint firstItem="8qO-jv-GeW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zSu-JH-9Db"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="FX2-fR-lWs"/>
                     <connections>
                         <outlet property="hourPV" destination="Qrh-Cg-VDH" id="7H1-ry-NNw"/>
                         <outlet property="locationLabel" destination="spt-V4-OzR" id="QGM-yZ-1XN"/>
