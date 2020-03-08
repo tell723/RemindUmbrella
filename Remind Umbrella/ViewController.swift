@@ -21,22 +21,26 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
     var latitude: CLLocationDegrees!
     var longitude: CLLocationDegrees!
     var location = ""
-    var weather = "" {
-        willSet{
-            switch newValue {
-            case "":
-                message = "天気情報が所得されていません"
-            case "Rain":
-                message = "傘忘れんなよ！！"
-            default:
-                message =  "傘はいりません"
+    var isWeathersContainsRain = false
+
+    var message: String {
+        get {
+            if self.weaters == [] {
+                return "天気情報が取得されていません"
+            } else {
+                if isWeathersContainsRain {
+                    return "傘忘れんなよ！！"
+                } else {
+                    return "傘はいらないよ"
+                }
             }
         }
     }
-    var message = ""
-    let baseUrl = "https://api.openweathermap.org/data/2.5/weather?"
-    let apiKey = "06c2c12ef09f140ac6e2270864976fc4"
-    
+    let openWeatherBaseUrl = "https://api.openweathermap.org/data/2.5/weather?"
+    let openWeatherApiKey = "06c2c12ef09f140ac6e2270864976fc4"
+    let darkSkyBaseUrl = "https://api.darksky.net/forecast"
+    let darkSkyApiKey = "c713b009d8f479f7caae865a785a5a60"
+    var weaters: [String] = []
     var hour: Int!
     var min: Int!
     let hourList = [Int](0...23)
@@ -110,6 +114,8 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
     
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
+        
+        self.weaters = []
                 
         let location = locations.first
         self.latitude = location?.coordinate.latitude
@@ -119,27 +125,63 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         print("lat: \(lat) lon: \(lon)")
         
         let dispatchGroup = DispatchGroup()
-        let jsonString = "\(self.baseUrl)lat=\(lat)&lon=\(lon)&appid=\(self.apiKey)"
-        guard let url = URL(string: jsonString) else { return }
+        let queue1 = DispatchQueue.main
         
-        dispatchGroup.enter()
-        let task: URLSessionTask =
-            URLSession.shared.dataTask(with: url,
-                                       completionHandler: {data, response, error in
-                                        guard let data = data else { return }
-                                        do {
-                                            let json = try? JSON(data: data)
-                                            self.weather = json!["weather"][0]["main"].stringValue
-                                            self.location = json!["name"].stringValue
-                                            print("weather: \(self.weather)")
-                                            print("name: \(self.location)")
-                                            dispatchGroup.leave()
-                                        } catch {
-                                            print(error)
-                                        }
-            })
-        task.resume()
-        dispatchGroup.notify(queue: .main) {
+        let locationJsonString = "\(self.openWeatherBaseUrl)lat=\(lat)&lon=\(lon)&appid=\(self.openWeatherApiKey)"
+        let weatherJsonString = "\(self.darkSkyBaseUrl)/\(self.darkSkyApiKey)/\(lat),\(lon)?exclude=alerts,daily,flags"
+        guard let locationUrl = URL(string: locationJsonString) else { return }
+        guard let weatherUrl = URL(string: weatherJsonString) else { return }
+
+        queue1.async(group: dispatchGroup) {
+            dispatchGroup.enter()
+            let locationTask: URLSessionTask =
+                URLSession.shared.dataTask(with: locationUrl,
+                                           completionHandler: {data, response, error in
+                                            guard let data = data else { return }
+                                            do {
+                                                let json = try? JSON(data: data)
+                                                self.location = json!["name"].stringValue
+                                                print("name: \(self.location)")
+                                                dispatchGroup.leave()
+                                            } catch {
+                                                print(error)
+                                            }
+                })
+            locationTask.resume()
+        }
+        
+        queue1.async(group: dispatchGroup) {
+            dispatchGroup.enter()
+            let weatherTask: URLSessionTask =
+                URLSession.shared.dataTask(with: weatherUrl,
+                                           completionHandler: {data, response, error in
+                                            guard let data = data else { return }
+                                            do {
+                                                let json = try? JSON(data: data)
+                                                let currentWeather = json!["currently"]["icon"].stringValue
+                                                self.weaters.append(currentWeather)
+                                                
+                                                var hourlyData = json!["hourly"]["data"]
+                                                let currentTime = json!["currently"]["time"].intValue
+                                                var i = 0
+                                                while self.weaters.count < 10 {
+                                                    
+                                                    if hourlyData[i]["time"].intValue >= currentTime {
+                                                        self.weaters.append(hourlyData[i]["icon"].stringValue)
+                                                        if hourlyData[i]["icon"].stringValue.contains("rain") {
+                                                            self.isWeathersContainsRain = true
+                                                        }
+                                                    }
+                                                    i += 1
+                                                }
+                                                dispatchGroup.leave()
+                                            }
+                })
+            weatherTask.resume()
+        }
+        
+        dispatchGroup.notify(queue: queue1) {
+            print(self.weaters)
             self.setNotification()
         }
     }
@@ -176,6 +218,5 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         }
     }
     
-
 }
 
