@@ -13,22 +13,33 @@ import CoreLocation
 
 class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLocationManagerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
+    
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var hourPV: UIPickerView!
     @IBOutlet weak var minPV: UIPickerView!
     
-    var locationManager: CLLocationManager!
-    var latitude: CLLocationDegrees!
-    var longitude: CLLocationDegrees!
-    var location = ""
-    var isWeathersContainsRain = false
-
-    var message: String {
+    
+    var
+    locationManager: CLLocationManager!,
+    currentLatitude: CLLocationDegrees!,
+    currentLongitude: CLLocationDegrees!,
+    currentLocation = "",
+    
+    weathers:[String] = [],
+    isWeathersContainRain = false,
+    
+    noticeHour: Int!,
+    noticeMin: Int!;
+    let
+    hourList = [Int](0...23),
+    minList = [Int](0...59);
+    
+    var noticeMessage: String {
         get {
-            if self.weaters == [] {
+            if self.weathers == [] {
                 return "天気情報が取得されていません"
             } else {
-                if isWeathersContainsRain {
+                if isWeathersContainRain {
                     return "傘忘れんなよ！！"
                 } else {
                     return "傘はいらないよ"
@@ -36,19 +47,21 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
             }
         }
     }
-    let openWeatherBaseUrl = "https://api.openweathermap.org/data/2.5/weather?"
-    let openWeatherApiKey = "06c2c12ef09f140ac6e2270864976fc4"
-    let darkSkyBaseUrl = "https://api.darksky.net/forecast"
-    let darkSkyApiKey = "c713b009d8f479f7caae865a785a5a60"
-    var weaters: [String] = []
-    var hour: Int!
-    var min: Int!
-    let hourList = [Int](0...23)
-    let minList = [Int](0...59)
+    
+    /* 最初は天気情報の取得にOpenWeatherのみを利用していたが、
+    1時間刻みで天気情報を得るにはDarkSkyが適していたのでこちらを利用した。
+    ただ、DarkSkyだけでは現在位置名称を得られなかったため併用している */
+    
+    let
+    openWeatherBaseUrl = "https://api.openweathermap.org/data/2.5/weather?",
+    openWeatherApiKey = "06c2c12ef09f140ac6e2270864976fc4",
+    darkSkyBaseUrl = "https://api.darksky.net/forecast",
+    darkSkyApiKey = "c713b009d8f479f7caae865a785a5a60"
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
         setupLocationManager()
         
         hourPV.delegate = self
@@ -58,6 +71,8 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         
         self.locationLabel.text = "Location:"
     }
+    
+    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -90,13 +105,15 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
                     didSelectRow row: Int,
                     inComponent component: Int) {
         if pickerView.tag == 0 {
-            self.hour = hourList[row]
+            self.noticeHour = hourList[row]
         } else if pickerView.tag == 1 {
-            self.min = minList[row]
+            self.noticeMin = minList[row]
         }
         
         setNotification()
     }
+    
+    
     
     func setupLocationManager() {
         locationManager = CLLocationManager()
@@ -110,38 +127,45 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
             locationManager.startUpdatingLocation()
             locationManager.allowsBackgroundLocationUpdates = true
         }
+        //TODO:　許可されなかった場合の処理を実装
     }
     
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         
-        self.weaters = []
+        weathers = []
+        isWeathersContainRain = false
                 
         let location = locations.first
-        self.latitude = location?.coordinate.latitude
-        self.longitude = location?.coordinate.longitude
+        currentLatitude = location?.coordinate.latitude
+        currentLongitude = location?.coordinate.longitude
         
-        guard let lat = latitude, let lon = longitude else { return }
+        guard let lat = currentLatitude, let lon = currentLongitude else { return }
         print("lat: \(lat) lon: \(lon)")
         
         let dispatchGroup = DispatchGroup()
         let queue1 = DispatchQueue.main
         
-        let locationJsonString = "\(self.openWeatherBaseUrl)lat=\(lat)&lon=\(lon)&appid=\(self.openWeatherApiKey)"
-        let weatherJsonString = "\(self.darkSkyBaseUrl)/\(self.darkSkyApiKey)/\(lat),\(lon)?exclude=alerts,daily,flags"
-        guard let locationUrl = URL(string: locationJsonString) else { return }
-        guard let weatherUrl = URL(string: weatherJsonString) else { return }
+        
+        let openWeatherUrlString =
+        "\(self.openWeatherBaseUrl)lat=\(lat)&lon=\(lon)&appid=\(self.openWeatherApiKey)"
+        let darkSkyUrlString =
+        "\(self.darkSkyBaseUrl)/\(self.darkSkyApiKey)/\(lat),\(lon)?exclude=alerts,daily,flags"
+        print(darkSkyUrlString)
+    
+        guard let openWeatherUrl = URL(string: openWeatherUrlString) else { return }
+        guard let darkSkyUrl = URL(string: darkSkyUrlString) else { return }
 
         queue1.async(group: dispatchGroup) {
             dispatchGroup.enter()
             let locationTask: URLSessionTask =
-                URLSession.shared.dataTask(with: locationUrl,
+                URLSession.shared.dataTask(with: openWeatherUrl,
                                            completionHandler: {data, response, error in
                                             guard let data = data else { return }
                                             do {
-                                                let json = try? JSON(data: data)
-                                                self.location = json!["name"].stringValue
-                                                print("name: \(self.location)")
+                                                let jsonData = try? JSON(data: data)
+                                                self.currentLocation = jsonData!["name"].stringValue
+                                                print("name: \(self.currentLocation)")
                                                 dispatchGroup.leave()
                                             } catch {
                                                 print(error)
@@ -153,23 +177,29 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         queue1.async(group: dispatchGroup) {
             dispatchGroup.enter()
             let weatherTask: URLSessionTask =
-                URLSession.shared.dataTask(with: weatherUrl,
+                URLSession.shared.dataTask(with: darkSkyUrl,
                                            completionHandler: {data, response, error in
                                             guard let data = data else { return }
                                             do {
-                                                let json = try? JSON(data: data)
-                                                let currentWeather = json!["currently"]["icon"].stringValue
-                                                self.weaters.append(currentWeather)
+                                                let jsonData = try? JSON(data: data)
                                                 
-                                                var hourlyData = json!["hourly"]["data"]
-                                                let currentTime = json!["currently"]["time"].intValue
+                                                let currentWeather = jsonData!["currently"]["icon"].stringValue
+                                                if currentWeather == "rain" {
+                                                    self.isWeathersContainRain = true
+                                                }
+                                                self.weathers.append(currentWeather)
+                                                
+                                                var hourlyData = jsonData!["hourly"]["data"]
+                                                let currentTime = jsonData!["currently"]["time"].intValue
+                                                
+                                                // 取得時刻より後の９時間分の天気を取得
                                                 var i = 0
-                                                while self.weaters.count < 10 {
+                                                while self.weathers.count < 10 {
                                                     
                                                     if hourlyData[i]["time"].intValue >= currentTime {
-                                                        self.weaters.append(hourlyData[i]["icon"].stringValue)
+                                                        self.weathers.append(hourlyData[i]["icon"].stringValue)
                                                         if hourlyData[i]["icon"].stringValue.contains("rain") {
-                                                            self.isWeathersContainsRain = true
+                                                            self.isWeathersContainRain = true
                                                         }
                                                     }
                                                     i += 1
@@ -181,21 +211,24 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         }
         
         dispatchGroup.notify(queue: queue1) {
-            print(self.weaters)
+            print(self.weathers)
             self.setNotification()
+            print("message: \(self.noticeMessage)")
         }
     }
+    
+    
     
     func setNotification() {
         
         let content = UNMutableNotificationContent()
-        content.title = self.message
-        content.body = self.location
+        content.title = noticeMessage
+        content.body = currentLocation
         content.sound = UNNotificationSound.default
         
         var notificationTime = DateComponents()
-        notificationTime.hour = self.hour
-        notificationTime.minute = self.min
+        notificationTime.hour = noticeHour
+        notificationTime.minute = noticeMin
         
         let tirgger: UNNotificationTrigger
         tirgger = UNCalendarNotificationTrigger(dateMatching: notificationTime,
@@ -208,13 +241,13 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         UNUserNotificationCenter.current().add(request,
                                                withCompletionHandler: nil)
         
-        if let lat = self.latitude, let lon = self.longitude {
+        if let lat = currentLatitude, let lon = currentLongitude {
             print("lat: \(lat) lon: \(lon)")
         }
-        if location == "" {
+        if currentLocation == "" {
             self.locationLabel.text = "Location: 位置情報が取得できません"
         } else {
-            self.locationLabel.text = "Location: \(location)"
+            self.locationLabel.text = "Location: \(currentLocation)"
         }
     }
     
