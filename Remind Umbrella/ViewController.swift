@@ -11,7 +11,7 @@ import UserNotifications
 import SwiftyJSON
 import CoreLocation
 
-class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLocationManagerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLocationManagerDelegate {
     
     
     @IBOutlet weak var locationLabel: UILabel!
@@ -19,44 +19,31 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
     @IBOutlet weak var minPV: UIPickerView!
     
     
-    var
+    private var
     locationManager: CLLocationManager!,
     currentLatitude: CLLocationDegrees!,
     currentLongitude: CLLocationDegrees!,
     currentLocation = "",
     
-    weathers:[String] = [],
+    weathers: [String] = [],
     isWeathersContainRain = false,
     
     noticeHour: Int!,
     noticeMin: Int!;
-    let
+    private let
     hourList = [Int](0...23),
     minList = [Int](0...59);
     
-    var noticeMessage: String {
+    private var noticeMessage: String {
         get {
             if self.weathers == [] {
                 return "天気情報が取得されていません"
             } else {
-                if isWeathersContainRain {
-                    return "傘忘れんなよ！！"
-                } else {
-                    return "傘はいらないよ"
-                }
+                return isWeathersContainRain ? "傘忘れんなよ！！" : "傘はいらないよ"
             }
         }
     }
     
-    /* 最初は天気情報の取得にOpenWeatherのみを利用していたが、
-    1時間刻みで天気情報を得るにはDarkSkyが適していたのでこちらを利用した。
-    ただ、DarkSkyだけでは現在位置名称を得られなかったため併用している */
-    
-    let
-    openWeatherBaseUrl = "https://api.openweathermap.org/data/2.5/weather?",
-    openWeatherApiKey = "06c2c12ef09f140ac6e2270864976fc4",
-    darkSkyBaseUrl = "https://api.darksky.net/forecast",
-    darkSkyApiKey = "c713b009d8f479f7caae865a785a5a60"
     
 
     override func viewDidLoad() {
@@ -68,54 +55,14 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         hourPV.dataSource = self
         minPV.delegate = self
         minPV.dataSource = self
-        
+
         self.locationLabel.text = "Location:"
     }
     
     
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
+   private func setupLocationManager() {
     
-    func pickerView(_ pickerView: UIPickerView,
-                    numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.tag == 0 {
-            return hourList.count
-        } else if pickerView.tag == 1 {
-            return minList.count
-        } else {
-            return 0
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView,
-                    titleForRow row: Int,
-                    forComponent component: Int) -> String? {
-        if pickerView.tag == 0 {
-            return String(hourList[row])
-        } else if pickerView.tag == 1 {
-            return String(minList[row])
-        } else {
-            return ""
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView,
-                    didSelectRow row: Int,
-                    inComponent component: Int) {
-        if pickerView.tag == 0 {
-            self.noticeHour = hourList[row]
-        } else if pickerView.tag == 1 {
-            self.noticeMin = minList[row]
-        }
-        
-        setNotification()
-    }
-    
-    
-    
-    func setupLocationManager() {
         locationManager = CLLocationManager()
         guard let locationManager = locationManager else { return }
         locationManager.requestAlwaysAuthorization()
@@ -130,12 +77,11 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         //TODO:　許可されなかった場合の処理を実装
     }
     
+    
+    
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         
-        weathers = []
-        isWeathersContainRain = false
-                
         let location = locations.first
         currentLatitude = location?.coordinate.latitude
         currentLongitude = location?.coordinate.longitude
@@ -143,19 +89,37 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         guard let lat = currentLatitude, let lon = currentLongitude else { return }
         print("lat: \(lat) lon: \(lon)")
         
-        let dispatchGroup = DispatchGroup()
-        let queue1 = DispatchQueue.main
+       resetWeather(latitude: lat, longitude: lon)
+    }
+    
+    
+    
+    private func resetWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         
+        weathers = []
+        isWeathersContainRain = false
+        
+        /* 最初は天気情報の取得にOpenWeatherのみを利用していたが、
+         1時間刻みで天気情報を得るにはDarkSkyが適していたのでこちらを利用した。
+         ただ、DarkSkyだけでは現在位置名称を得られなかったため併用している */
+        let
+        openWeatherBaseUrl = "https://api.openweathermap.org/data/2.5/weather?",
+        openWeatherApiKey = "06c2c12ef09f140ac6e2270864976fc4",
+        darkSkyBaseUrl = "https://api.darksky.net/forecast",
+        darkSkyApiKey = "c713b009d8f479f7caae865a785a5a60";
         
         let openWeatherUrlString =
-        "\(self.openWeatherBaseUrl)lat=\(lat)&lon=\(lon)&appid=\(self.openWeatherApiKey)"
+        "\(openWeatherBaseUrl)lat=\(latitude)&lon=\(longitude)&appid=\(openWeatherApiKey)"
         let darkSkyUrlString =
-        "\(self.darkSkyBaseUrl)/\(self.darkSkyApiKey)/\(lat),\(lon)?exclude=alerts,daily,flags"
-        print(darkSkyUrlString)
-    
+        "\(darkSkyBaseUrl)/\(darkSkyApiKey)/\(latitude),\(longitude)?exclude=alerts,daily,flags"
+        
         guard let openWeatherUrl = URL(string: openWeatherUrlString) else { return }
         guard let darkSkyUrl = URL(string: darkSkyUrlString) else { return }
-
+        
+        let
+        dispatchGroup = DispatchGroup(),
+        queue1 = DispatchQueue.main
+        
         queue1.async(group: dispatchGroup) {
             dispatchGroup.enter()
             let locationTask: URLSessionTask =
@@ -189,18 +153,27 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
                                                 }
                                                 self.weathers.append(currentWeather)
                                                 
-                                                var hourlyData = jsonData!["hourly"]["data"]
-                                                let currentTime = jsonData!["currently"]["time"].intValue
+                                                let
+                                                hourlyData = jsonData!["hourly"]["data"],
+                                                currentTime = jsonData!["currently"]["time"].intValue
                                                 
-                                                // 取得時刻より後の９時間分の天気を取得
+                                                // 取得時刻より後の約９時間分の天気だけを抜粋
                                                 var i = 0
                                                 while self.weathers.count < 10 {
                                                     
-                                                    if hourlyData[i]["time"].intValue >= currentTime {
-                                                        self.weathers.append(hourlyData[i]["icon"].stringValue)
-                                                        if hourlyData[i]["icon"].stringValue.contains("rain") {
-                                                            self.isWeathersContainRain = true
-                                                        }
+                                                    let
+                                                    hourlyTime = hourlyData[i]["time"].intValue,
+                                                    hourlyWeather = hourlyData[i]["icon"].stringValue
+                                                    
+                                                    if hourlyTime < currentTime {
+                                                        i += 1
+                                                        continue
+                                                    }
+                                                    
+                                                    self.weathers.append(hourlyWeather)
+                                                    
+                                                    if hourlyWeather.contains("rain") {
+                                                        self.isWeathersContainRain = true
                                                     }
                                                     i += 1
                                                 }
@@ -217,9 +190,13 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         }
     }
     
+    private func selectNecessaryWeather(jsonData: JSON!) {
+        
+        
+    }
     
     
-    func setNotification() {
+    private func setNotification() {
         
         let content = UNMutableNotificationContent()
         content.title = noticeMessage
@@ -244,12 +221,64 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate, CLLoca
         if let lat = currentLatitude, let lon = currentLongitude {
             print("lat: \(lat) lon: \(lon)")
         }
-        if currentLocation == "" {
-            self.locationLabel.text = "Location: 位置情報が取得できません"
-        } else {
-            self.locationLabel.text = "Location: \(currentLocation)"
-        }
+
+        locationLabel.text =
+            currentLocation == "" ? "Location: 位置情報が取得できません" : "Location: \(currentLocation)"
     }
     
 }
 
+
+
+
+extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView,
+                    numberOfRowsInComponent component: Int) -> Int {
+
+        switch pickerView.tag {
+        case 0:
+            return hourList.count
+        case 1:
+            return minList.count
+        default:
+            return 0
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView,
+                    titleForRow row: Int,
+                    forComponent component: Int) -> String? {
+        
+        switch pickerView.tag {
+        case 0:
+            return String(hourList[row])
+        case 1:
+            return String(minList[row])
+        default:
+            return ""
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView,
+                    didSelectRow row: Int,
+                    inComponent component: Int) {
+        
+        switch pickerView.tag {
+        case 0:
+            noticeHour = hourList[row]
+        case 1:
+            noticeMin = minList[row]
+        default:
+            break
+        }
+        
+        setNotification()
+    }
+   
+}
